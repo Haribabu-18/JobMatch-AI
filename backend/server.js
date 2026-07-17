@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import 'dotenv/config';
 import express from 'express'
 import cors from 'cors';
 import resumeRoutes from "./routes/resumeRouter.js";
@@ -10,7 +9,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.MONGO_URI);
+// console.log(process.env.MONGO_URI);
+console.log(process.env.GEMINI_API_KEY, "gemini api key")
 
 connectDB();
 

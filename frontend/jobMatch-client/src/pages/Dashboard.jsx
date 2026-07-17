@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import RoleBarChart from "../components/charts/RoleBarChart";
+import ExperienceLineChart from "../components/charts/ExperienceLineChart";
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -6,51 +8,75 @@ function Dashboard() {
   useEffect(() => {
     fetch("http://localhost:4000/api/dashboard")
       .then((res) => res.json())
-      .then((data) => setStats(data));
+      .then((data) => setStats(data))
+      .catch((err) => console.error(err));
   }, []);
 
-  if (!stats) return <p className="text-center mt-16">Loading dashboard...</p>;
+  if (!stats) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg">
+        Loading Dashboard...
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto mt-12 p-6 space-y-8">
-      <h1 className="text-2xl font-semibold text-gray-900">Job Dashboard</h1>
+    <div className="bg-slate-50 min-h-screen p-8">
+      {/* Header */}
+      <h1 className="text-3xl font-bold text-slate-800 mb-8">
+        Job Market Dashboard
+      </h1>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-sm text-gray-500">Total Jobs</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.totalJobs}</p>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-xl shadow p-6">
+          <p className="text-gray-500 text-sm">Total Jobs</p>
+          <h2 className="text-3xl font-bold mt-2">{stats.totalJobs}</h2>
         </div>
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-sm text-gray-500">Posted Today</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.postedToday}</p>
+
+        <div className="bg-white rounded-xl shadow p-6">
+          <p className="text-gray-500 text-sm">Posted Today</p>
+          <h2 className="text-3xl font-bold mt-2">{stats.postedToday}</h2>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6">
+          <p className="text-gray-500 text-sm">Top Roles</p>
+          <h2 className="text-3xl font-bold mt-2">{stats.byRole.length}</h2>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6">
+          <p className="text-gray-500 text-sm">Experience Groups</p>
+          <h2 className="text-3xl font-bold mt-2">
+            {stats.byExperience.length}
+          </h2>
         </div>
       </div>
 
-      {/* Top roles */}
-      <div className="bg-white p-5 rounded-xl shadow-sm border">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">Top Roles</h2>
-        <ul className="space-y-2">
-          {stats.byRole.map((role) => (
-            <li key={role._id} className="flex justify-between text-sm text-gray-700">
-              <span>{role._id}</span>
-              <span className="font-medium">{role.count}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Charts */}
+      {/* Charts */}
 
-      {/* Jobs by experience */}
-      <div className="bg-white p-5 rounded-xl shadow-sm border">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">Jobs by Experience</h2>
-        <ul className="space-y-2">
-          {stats.byExperience.map((exp) => (
-            <li key={exp._id} className="flex justify-between text-sm text-gray-700">
-              <span>{exp._id}</span>
-              <span className="font-medium">{exp.count}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="space-y-8">
+
+        {/* Jobs by Role */}
+
+        <div className="bg-white rounded-xl p-6 shadow">
+          <h2 className="text-xl font-semibold mb-6">
+            Jobs by Role
+          </h2>
+
+          <RoleBarChart data={stats.byRole} />
+        </div>
+
+        {/* Jobs by Experience */}
+
+        <div className="bg-white rounded-xl p-6 shadow">
+          <h2 className="text-xl font-semibold mb-6">
+            Jobs by Experience
+          </h2>
+
+          <ExperienceLineChart data={stats.byExperience} />
+        </div>
+
       </div>
     </div>
   );
