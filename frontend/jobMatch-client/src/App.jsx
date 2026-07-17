@@ -13,18 +13,24 @@ import Sidebar from './components/Sidebar'
 function App() {
 
   return (
+
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/sidebar" element={<Sidebar />} />
-        </Routes>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/upload-resume" element={<UploadResume />} />
-          <Route path="/excel-file" element={<ExcelFile />} />
-          <Route path="/job-findings" element={<JobFindings />} />
-        </Routes>
+        <div className="flex">
+          <Sidebar />
+
+          <main className="flex-1 ml-64 p-6">
+            <Routes>
+              <Route path="/" element={<ExcelFile />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/upload-resume" element={<UploadResume />} />
+              <Route path="/job-findings" element={<JobFindings />} />
+            </Routes>
+          </main>
+        </div>
       </BrowserRouter>
+
+
     </>
   )
 }
