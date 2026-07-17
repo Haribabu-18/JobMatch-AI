@@ -11,9 +11,7 @@ import JobFindings from './pages/JobFindings'
 import Sidebar from './components/Sidebar'
 
 function App() {
-
   return (
-
     <>
       <BrowserRouter>
         <div className="flex">
@@ -29,10 +27,8 @@ function App() {
           </main>
         </div>
       </BrowserRouter>
-
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;
